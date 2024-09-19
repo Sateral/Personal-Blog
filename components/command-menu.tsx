@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { useRouter } from 'next/navigation';
-import { type DialogProps } from '@radix-ui/react-dialog';
+import * as React from "react";
+import { useRouter } from "next/navigation";
+import { type DialogProps } from "@radix-ui/react-dialog";
 import {
   CircleIcon,
   FileIcon,
   LaptopIcon,
   MoonIcon,
   SunIcon,
-} from '@radix-ui/react-icons';
-import { useTheme } from 'next-themes';
+} from "@radix-ui/react-icons";
+import { useTheme } from "next-themes";
 
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   CommandDialog,
   CommandEmpty,
@@ -22,8 +22,8 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from '@/components/ui/command';
-import { Post } from '@prisma/client';
+} from "@/components/ui/command";
+import { Post } from "@prisma/client";
 
 interface CommmandMenuProps extends DialogProps {
   data: Post[];
@@ -31,14 +31,14 @@ interface CommmandMenuProps extends DialogProps {
 
 export function CommandMenu({ data, ...props }: CommmandMenuProps) {
   const [visibleItems, setVisibleItems] = React.useState(5);
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [searchTerm, setSearchTerm] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const { setTheme } = useTheme();
   const router = useRouter();
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || e.key === '/') {
+      if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || e.key === "/") {
         if (
           (e.target instanceof HTMLElement && e.target.isContentEditable) ||
           e.target instanceof HTMLInputElement ||
@@ -53,8 +53,8 @@ export function CommandMenu({ data, ...props }: CommmandMenuProps) {
       }
     };
 
-    document.addEventListener('keydown', down);
-    return () => document.removeEventListener('keydown', down);
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
   }, []);
 
   const runCommand = React.useCallback((command: () => unknown) => {
@@ -69,25 +69,25 @@ export function CommandMenu({ data, ...props }: CommmandMenuProps) {
   return (
     <>
       <Button
-        variant='outline'
+        variant="outline"
         className={cn(
-          'relative h-8 w-full justify-start rounded-[0.5rem] bg-muted/50 text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-64'
+          "relative h-8 w-full justify-start rounded-[0.5rem] bg-muted/50 text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-64"
         )}
         onClick={() => setOpen(true)}
         {...props}
       >
-        <span className='hidden lg:inline-flex'>Search documentation...</span>
-        <span className='inline-flex lg:hidden'>Search...</span>
-        <kbd className='pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex'>
-          <span className='text-xs'>⌘</span>K
+        <span className="hidden lg:inline-flex">Search articles...</span>
+        <span className="inline-flex lg:hidden">Search...</span>
+        <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+          <span className="text-xs">⌘</span>K
         </kbd>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput
-          placeholder='Type a command or search...'
+          placeholder="Type a command or search..."
           onValueChange={(value) => {
             setSearchTerm(value);
-            if (value === '') {
+            if (value === "") {
               setVisibleItems(5);
             } else {
               setVisibleItems(10);
@@ -96,7 +96,7 @@ export function CommandMenu({ data, ...props }: CommmandMenuProps) {
         />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading='Links'>
+          <CommandGroup heading="Links">
             {filteredData.slice(0, visibleItems).map((post) => (
               <CommandItem
                 key={post.title}
@@ -105,23 +105,23 @@ export function CommandMenu({ data, ...props }: CommmandMenuProps) {
                   runCommand(() => router.push(post.id as string));
                 }}
               >
-                <FileIcon className='mr-2 h-4 w-4' />
+                <FileIcon className="mr-2 h-4 w-4" />
                 {post.title}
               </CommandItem>
             ))}
           </CommandGroup>
           <CommandSeparator />
-          <CommandGroup heading='Theme'>
-            <CommandItem onSelect={() => runCommand(() => setTheme('light'))}>
-              <SunIcon className='mr-2 h-4 w-4' />
+          <CommandGroup heading="Theme">
+            <CommandItem onSelect={() => runCommand(() => setTheme("light"))}>
+              <SunIcon className="mr-2 h-4 w-4" />
               Light
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => setTheme('dark'))}>
-              <MoonIcon className='mr-2 h-4 w-4' />
+            <CommandItem onSelect={() => runCommand(() => setTheme("dark"))}>
+              <MoonIcon className="mr-2 h-4 w-4" />
               Dark
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => setTheme('system'))}>
-              <LaptopIcon className='mr-2 h-4 w-4' />
+            <CommandItem onSelect={() => runCommand(() => setTheme("system"))}>
+              <LaptopIcon className="mr-2 h-4 w-4" />
               System
             </CommandItem>
           </CommandGroup>

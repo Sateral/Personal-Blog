@@ -87,7 +87,7 @@ export const PostForm = ({ initialData }: PostFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
           disabled={loading}
@@ -124,8 +124,8 @@ export const PostForm = ({ initialData }: PostFormProps) => {
           )}
         />
         <Button type="submit" disabled={loading}>
+          {loading ? <Loader2Icon className="animate-spin mr-2" /> : null}
           Submit{" "}
-          {loading ? <Loader2Icon className="animate-spin ml-2" /> : null}
         </Button>
       </form>
     </Form>
